@@ -5,7 +5,7 @@ use std::io::BufReader;
 use std::io::prelude::*;
 
 #[derive(Debug, RustcDecodable, Clone, Default)]
-pub struct MonitorConfig {
+pub struct ForeverConfig {
     pub name: Option<String>,
     pub command: Option<String>,
     pub args: Option<Vec<String>>,
@@ -24,7 +24,7 @@ pub struct ProcessConfig {
     pub respawns: Option<u32>,
 }
 
-impl MonitorConfig {
+impl ForeverConfig {
     pub fn new(path: &str) -> Self {
         let config_file = File::open(path).unwrap();
         let mut fconfig = BufReader::new(config_file);

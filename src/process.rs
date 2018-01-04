@@ -1,6 +1,6 @@
 extern crate util;
 
-use config::{MonitorConfig, ProcessConfig};
+use config::{ForeverConfig, ProcessConfig};
 use std::collections::HashMap;
 use std::default::Default;
 use std::fs::File;
@@ -22,16 +22,16 @@ pub struct Processes {
 }
 
 impl Processes {
-    pub fn new(monitorconfig: MonitorConfig) -> Self {
+    pub fn new(foreverconfig: ForeverConfig) -> Self {
         let parentcfg = ProcessConfig {
-            name: monitorconfig.name.clone(),
-            command: monitorconfig.command.clone(),
-            args: monitorconfig.args.clone(),
-            pidfile: monitorconfig.pidfile.clone(),
+            name: foreverconfig.name.clone(),
+            command: foreverconfig.command.clone(),
+            args: foreverconfig.args.clone(),
+            pidfile: foreverconfig.pidfile.clone(),
             ..Default::default()
         };
 
-        let processcfg = monitorconfig.process.unwrap();
+        let processcfg = foreverconfig.process.unwrap();
         let mut children_processes = HashMap::new();
 
         for cfg in &processcfg {

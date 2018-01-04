@@ -26,7 +26,7 @@ pub mod config;
 pub mod process;
 
 use clap::{App, SubCommand};
-use config::MonitorConfig;
+use config::ForeverConfig;
 use process::Processes;
 use std::env;
 use std::thread;
@@ -38,10 +38,10 @@ fn main() {
 
     logger::init();
 
-    let matches = App::new("monitor")
+    let matches = App::new("Forever")
         .version("0.1")
         .author("Cryptape")
-        .about("Monitor the processes")
+        .about("Forever the processes")
         .subcommand(
             SubCommand::with_name("start")
                 .about("Start all proccesses in the background")
@@ -68,7 +68,7 @@ fn main() {
         )
         .get_matches();
 
-    let config = MonitorConfig::new("monitor.toml");
+    let config = ForeverConfig::new("forever.toml");
     let mut daemon: Processes = Processes::new(config);
 
     match matches.subcommand_name() {
