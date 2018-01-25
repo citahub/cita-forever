@@ -19,8 +19,11 @@ extern crate clap;
 #[macro_use]
 extern crate log;
 extern crate logger;
-extern crate rustc_serialize;
 extern crate util;
+
+#[macro_use]
+extern crate serde_derive;
+extern crate toml;
 
 pub mod config;
 pub mod process;

@@ -4,8 +4,9 @@ version = "0.1.0"
 authors = ["Cryptape Technologies <arch@cryptape.com>"]
 
 [dependencies]
-toml = "0.2"
-rustc-serialize = "0.3"
+serde = "1.0"
+serde_derive = "1.0"
+toml = "0.4"
 log = "0.4"
 clap = "2"
 logger = { git = "https://github.com/cryptape/cita-common.git", branch = "develop" }

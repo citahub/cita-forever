@@ -1,10 +1,8 @@
-extern crate toml;
-
 use std::fs::File;
-use std::io::BufReader;
-use std::io::prelude::*;
+use std::io::Read;
+use toml;
 
-#[derive(Debug, RustcDecodable, Clone, Default)]
+#[derive(Debug, Deserialize, Clone, Default)]
 pub struct ForeverConfig {
     pub name: Option<String>,
     pub command: Option<String>,
@@ -13,7 +11,7 @@ pub struct ForeverConfig {
     pub process: Option<Vec<ProcessConfig>>,
 }
 
-#[derive(Debug, RustcDecodable, Clone, Default)]
+#[derive(Debug, Deserialize, Clone, Default)]
 pub struct ProcessConfig {
     pub name: Option<String>,
     pub command: Option<String>,
@@ -26,10 +24,11 @@ pub struct ProcessConfig {
 
 impl ForeverConfig {
     pub fn new(path: &str) -> Self {
-        let config_file = File::open(path).unwrap();
-        let mut fconfig = BufReader::new(config_file);
-        let mut content = String::new();
-        fconfig.read_to_string(&mut content).unwrap();
-        toml::decode_str(&content).unwrap()
+        let mut config_file = File::open(path).unwrap();
+        let mut buffer = String::new();
+        config_file
+            .read_to_string(&mut buffer)
+            .expect("Failed to load forever config.");
+        toml::from_str(&buffer).unwrap()
     }
 }
