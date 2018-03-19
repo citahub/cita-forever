@@ -1,7 +1,3 @@
-use std::fs::File;
-use std::io::Read;
-use toml;
-
 #[derive(Debug, Deserialize, Clone, Default)]
 pub struct ForeverConfig {
     pub name: Option<String>,
@@ -24,11 +20,6 @@ pub struct ProcessConfig {
 
 impl ForeverConfig {
     pub fn new(path: &str) -> Self {
-        let mut config_file = File::open(path).unwrap();
-        let mut buffer = String::new();
-        config_file
-            .read_to_string(&mut buffer)
-            .expect("Failed to load forever config.");
-        toml::from_str(&buffer).unwrap()
+        parse_config!(ForeverConfig, path)
     }
 }
