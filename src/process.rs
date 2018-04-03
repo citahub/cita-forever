@@ -109,11 +109,13 @@ impl Processes {
             Some(pid) => {
                 let pid_str = pid.to_string();
                 let args = vec!["-9", &pid_str];
-                Command::new("kill")
-                    .args(args)
-                    .spawn()
-                    .expect("kill command failed to start");
-                info!("{} stopped", name);
+                let status = Command::new("kill").args(args).status();
+                match status {
+                    Ok(exit_status) if exit_status.success() => {
+                        info!("kill {} {} ok", name, &pid_str);
+                    }
+                    _ => info!("kill {} {} failed", name, &pid_str),
+                }
                 delete_pidfile(pidfile);
             }
             None => {
@@ -145,10 +147,13 @@ impl Processes {
                     let pid_str = pid.to_string();
                     //send signal(SIGUSR1) to child processes
                     let args = vec!["-10", &pid_str];
-                    Command::new("kill")
-                        .args(args)
-                        .spawn()
-                        .expect("kill command failed to start");
+                    let status = Command::new("kill").args(args).status();
+                    match status {
+                        Ok(exit_status) if exit_status.success() => {
+                            info!("logrotate {} {} ok", name, &pid_str);
+                        }
+                        _ => info!("logrotate {} {} failed", name, &pid_str),
+                    }
                 }
                 None => {
                     warn!("{} not started", name);
