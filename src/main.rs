@@ -35,6 +35,8 @@ use std::env;
 use std::thread;
 use std::time;
 
+include!(concat!(env!("OUT_DIR"), "/build_info.rs"));
+
 fn main() {
     // Always print backtrace on panic.
     env::set_var("RUST_BACKTRACE", "full");
@@ -42,7 +44,8 @@ fn main() {
     logger::init();
 
     let matches = App::new("Forever")
-        .version("0.1")
+        .version(get_build_info_str(true))
+        .long_version(get_build_info_str(false))
         .author("Cryptape")
         .about("Forever the processes")
         .subcommand(
