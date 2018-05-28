@@ -28,7 +28,7 @@ extern crate serde_derive;
 pub mod config;
 pub mod process;
 
-use clap::{App, SubCommand};
+use clap::{App, Arg, SubCommand};
 use config::ForeverConfig;
 use process::Processes;
 use std::env;
@@ -48,6 +48,14 @@ fn main() {
         .long_version(get_build_info_str(false))
         .author("Cryptape")
         .about("Forever the processes")
+        .arg(
+            Arg::with_name("config")
+                .short("c")
+                .long("config")
+                .value_name("FILE")
+                .help("Set forever.yaml")
+                .takes_value(true),
+        )
         .subcommand(
             SubCommand::with_name("start")
                 .about("Start all proccesses in the background")
@@ -74,7 +82,8 @@ fn main() {
         )
         .get_matches();
 
-    let config = ForeverConfig::new("forever.toml");
+    let config_file = matches.value_of("config").unwrap_or("forever.toml");
+    let config = ForeverConfig::new(config_file);
     let mut daemon: Processes = Processes::new(config);
 
     match matches.subcommand_name() {
