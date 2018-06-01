@@ -17,7 +17,6 @@
 
 extern crate clap;
 #[macro_use]
-extern crate log;
 extern crate logger;
 #[macro_use]
 extern crate util;
