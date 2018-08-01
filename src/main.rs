@@ -30,6 +30,7 @@ pub mod process;
 use clap::{App, Arg, SubCommand};
 use config::ForeverConfig;
 use process::Processes;
+
 use std::env;
 use std::thread;
 use std::time;
@@ -40,7 +41,9 @@ fn main() {
     // Always print backtrace on panic.
     env::set_var("RUST_BACKTRACE", "full");
 
-    logger::init();
+    logger::init_config("cita-forever");
+    info!("CITA:forever:cita-forever");
+    info!("Version: {}", get_build_info_str(true));
 
     let matches = App::new("Forever")
         .version(get_build_info_str(true))
