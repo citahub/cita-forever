@@ -65,8 +65,7 @@ impl Processes {
 
         let pidfile_clone = self.processcfg.pidfile.clone();
         let pidfile = pidfile_clone.unwrap();
-        let is_exist = check_process(pidfile);
-        is_exist
+        check_process(pidfile)
     }
 
     // start parent process
@@ -176,12 +175,9 @@ pub fn run_process(child_process: Arc<Mutex<Processes>>) {
                 let pidfile = process.processcfg.pidfile.clone().unwrap();
 
                 // check process exsit
-                match process.find_process() {
-                    Some(pid) => {
-                        warn!("{} already started,pid is {}", name, pid);
-                        return;
-                    }
-                    None => {}
+                if let Some(pid) = process.find_process() {
+                    warn!("{} already started,pid is {}", name, pid);
+                    return;
                 }
 
                 // start child process
@@ -207,10 +203,8 @@ pub fn run_process(child_process: Arc<Mutex<Processes>>) {
                     }
                 }
             }
-            match change_status(&child_process) {
-                // reach max respwawn times
-                false => return,
-                _ => {}
+            if !change_status(&child_process) {
+                return;
             }
         }
     });
@@ -256,14 +250,11 @@ pub fn read_pid(path: String) -> u32 {
             buf_reader
                 .read_to_string(&mut contents)
                 .expect("read pid file failed");
-            let pid = contents
+            contents
                 .parse::<u32>()
-                .expect("parse pid error from pid file");
-            return pid;
+                .expect("parse pid error from pid file")
         }
-        Err(_) => {
-            return 0;
-        }
+        Err(_) => 0,
     }
 }
 
@@ -277,15 +268,11 @@ fn check_process(pidfile: String) -> Option<u32> {
     // read pid from pidfile
     let pid: u32 = read_pid(pidfile);
     if pid == 0 {
-        return None;
-    }
-
-    match File::open(format!("/proc/{}/cmdline", pid)) {
-        Ok(_) => {
-            return Some(pid);
-        }
-        Err(_) => {
-            return None;
+        None
+    } else {
+        match File::open(format!("/proc/{}/cmdline", pid)) {
+            Ok(_) => Some(pid),
+            Err(_) => None,
         }
     }
 }
