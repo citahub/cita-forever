@@ -10,8 +10,11 @@ use std::io::Write;
 use std::io::{BufReader, Read};
 use std::process::Child;
 use std::process::Command;
+use std::sync::mpsc::channel;
+use std::sync::mpsc::{Receiver, Sender};
 use std::sync::Arc;
 use std::thread;
+
 use util::Mutex;
 
 #[derive(Debug, Default)]
@@ -78,6 +81,8 @@ impl Processes {
             .spawn()
             .expect("failed to execute child");
 
+        info!("process id: {}", child.id());
+
         self.processcfg.pid = Some(child.id());
 
         // record pid
@@ -95,8 +100,16 @@ impl Processes {
 
     // run all child processes
     pub fn start_all(self) {
+        let (tx, rx): (Sender<String>, Receiver<String>) = channel();
+
         for (_, child_process) in self.children {
-            run_process(child_process);
+            let tx = tx.clone();
+            run_process(child_process, tx);
+        }
+
+        loop {
+            let ret = rx.recv().unwrap();
+            warn!("{}", ret);
         }
     }
 
@@ -126,14 +139,14 @@ impl Processes {
 
     // stop all processes
     pub fn stop_all(mut self) {
-        // stop parent process
-        self.stop();
-
         // stop all child process
-        for (_, child_process) in self.children {
+        for (_, child_process) in self.children.clone() {
             let mut process = child_process.lock();
             process.stop();
         }
+
+        // stop parent process
+        self.stop();
     }
 
     // all child processes logrotate
@@ -163,7 +176,7 @@ impl Processes {
 }
 
 // run child process
-pub fn run_process(child_process: Arc<Mutex<Processes>>) {
+pub fn run_process(child_process: Arc<Mutex<Processes>>, tx: Sender<String>) {
     thread::spawn(move || {
         loop {
             {
@@ -184,6 +197,7 @@ pub fn run_process(child_process: Arc<Mutex<Processes>>) {
                 process.start();
 
                 match process.processhandle {
+                    // wait here, except error occurs
                     Some(ref mut child) => match child.wait() {
                         Ok(_status) => {
                             warn!("{} exit status is {:?}", name, _status);
@@ -203,7 +217,12 @@ pub fn run_process(child_process: Arc<Mutex<Processes>>) {
                     }
                 }
             }
+
             if !change_status(&child_process) {
+                // inform cita-forever error occurs.
+                let name = child_process.lock().processcfg.name.clone().unwrap();
+                tx.send(format!("==>: Child process {} exited unexpectedly!", name))
+                    .unwrap();
                 return;
             }
         }
@@ -270,9 +289,21 @@ fn check_process(pidfile: String) -> Option<u32> {
     if pid == 0 {
         None
     } else {
-        match File::open(format!("/proc/{}/cmdline", pid)) {
-            Ok(_) => Some(pid),
-            Err(_) => None,
+        let pid_str = pid.to_string();
+        let args = vec!["-p", &pid_str];
+        let output = Command::new("ps")
+            .args(args)
+            .output()
+            .expect("failed to execute ps -p");
+        if output.status.success() {
+            let otpt_str = String::from_utf8(output.stdout).unwrap();
+            if otpt_str.contains(&pid.to_string()) {
+                Some(pid)
+            } else {
+                None
+            }
+        } else {
+            None
         }
     }
 }

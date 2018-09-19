@@ -32,8 +32,6 @@ use config::ForeverConfig;
 use process::Processes;
 
 use std::env;
-use std::thread;
-use std::time;
 
 include!(concat!(env!("OUT_DIR"), "/build_info.rs"));
 
@@ -102,9 +100,6 @@ fn main() {
         Some(&_) => {}
         None => {
             daemon.start_all();
-            loop {
-                thread::sleep(time::Duration::from_secs(1))
-            }
         }
     }
 }
