@@ -290,7 +290,7 @@ fn check_process(pidfile: String) -> Option<u32> {
         None
     } else {
         let pid_str = pid.to_string();
-        let args = vec!["-p", &pid_str];
+        let args = vec!["-p", &pid_str, "-o", "pid="];
         let output = Command::new("ps")
             .args(args)
             .output()
