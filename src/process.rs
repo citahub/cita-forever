@@ -139,14 +139,14 @@ impl Processes {
 
     // stop all processes
     pub fn stop_all(mut self) {
+        // stop parent process
+        self.stop();
+
         // stop all child process
-        for (_, child_process) in self.children.clone() {
+        for (_, child_process) in self.children {
             let mut process = child_process.lock();
             process.stop();
         }
-
-        // stop parent process
-        self.stop();
     }
 
     // all child processes logrotate
