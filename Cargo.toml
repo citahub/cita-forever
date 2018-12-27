@@ -12,10 +12,3 @@ util = { git = "https://github.com/cryptape/cita-common.git", branch = "develop"
 
 [build-dependencies]
 util = { git = "https://github.com/cryptape/cita-common.git", branch = "develop" }
-
-
-[features]
-default = ["sha3hash"]
-sha3hash = ["util/sha3hash"]
-blake2bhash = ["util/blake2bhash"]
-sm3hash = ["util/sm3hash"]
