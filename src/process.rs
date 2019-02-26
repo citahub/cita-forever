@@ -1,5 +1,7 @@
 extern crate util;
 
+use channel;
+use channel::{Receiver, Sender};
 use config::{ForeverConfig, ProcessConfig};
 use std::collections::HashMap;
 use std::default::Default;
@@ -10,8 +12,6 @@ use std::io::Write;
 use std::io::{BufReader, Read};
 use std::process::Child;
 use std::process::Command;
-use std::sync::mpsc::channel;
-use std::sync::mpsc::{Receiver, Sender};
 use std::sync::Arc;
 use std::thread;
 
@@ -100,7 +100,7 @@ impl Processes {
 
     // run all child processes
     pub fn start_all(self) {
-        let (tx, rx): (Sender<String>, Receiver<String>) = channel();
+        let (tx, rx): (Sender<String>, Receiver<String>) = channel::unbounded();
 
         for (_, child_process) in self.children {
             let tx = tx.clone();

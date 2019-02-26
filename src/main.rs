@@ -16,6 +16,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 extern crate clap;
+extern crate crossbeam_channel as channel;
 #[macro_use]
 extern crate logger;
 #[macro_use]
