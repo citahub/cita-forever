@@ -1,5 +1,5 @@
 // CITA
-// Copyright 2016-2017 Cryptape Technologies LLC.
+// Copyright 2016-2019 Cryptape Technologies LLC.
 
 // This program is free software: you can redistribute it
 // and/or modify it under the terms of the GNU General Public
@@ -83,7 +83,7 @@ fn main() {
         )
         .get_matches();
 
-    let config_file = matches.value_of("config").unwrap_or("configs/forever.toml");
+    let config_file = matches.value_of("config").unwrap_or("forever.toml");
     let config = ForeverConfig::new(config_file);
     info!("config_file: {:?}", config);
     let mut daemon: Processes = Processes::new(config);
