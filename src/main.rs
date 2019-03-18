@@ -32,6 +32,7 @@ use clap::{App, Arg, SubCommand};
 use config::ForeverConfig;
 use process::Processes;
 
+use logger::LogFavour;
 use std::env;
 
 include!(concat!(env!("OUT_DIR"), "/build_info.rs"));
@@ -39,10 +40,6 @@ include!(concat!(env!("OUT_DIR"), "/build_info.rs"));
 fn main() {
     // Always print backtrace on panic.
     env::set_var("RUST_BACKTRACE", "full");
-
-    logger::init_config("cita-forever");
-    info!("CITA:forever:cita-forever");
-    info!("Version: {}", get_build_info_str(true));
 
     let matches = App::new("Forever")
         .version(get_build_info_str(true))
@@ -57,6 +54,7 @@ fn main() {
                 .help("Set forever.yaml")
                 .takes_value(true),
         )
+        .arg_from_usage("-s, --stdout 'Log to console'")
         .subcommand(
             SubCommand::with_name("start")
                 .about("Start all proccesses in the background")
@@ -82,6 +80,15 @@ fn main() {
                 .author("Cryptape"),
         )
         .get_matches();
+
+    let favour = if matches.is_present("stdout") {
+        LogFavour::Stdout("cita-forever")
+    } else {
+        LogFavour::File("cita-forever")
+    };
+    logger::init_config(&favour);
+    info!("CITA:forever:cita-forever");
+    info!("Version: {}", get_build_info_str(true));
 
     let config_file = matches.value_of("config").unwrap_or("forever.toml");
     let config = ForeverConfig::new(config_file);
