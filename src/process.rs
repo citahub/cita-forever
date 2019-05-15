@@ -8,13 +8,13 @@ use std::default::Default;
 use std::fs::remove_file;
 use std::fs::File;
 use std::fs::OpenOptions;
+use std::io::ErrorKind;
 use std::io::Write;
 use std::io::{BufReader, Read};
 use std::process::Child;
 use std::process::Command;
 use std::sync::Arc;
 use std::thread;
-
 use util::Mutex;
 
 #[derive(Debug, Default)]
@@ -128,13 +128,12 @@ impl Processes {
                     }
                     _ => info!("kill {} {} failed", name, &pid_str),
                 }
-                delete_pidfile(pidfile);
             }
             None => {
                 warn!("{} not started", name);
-                return;
             }
         }
+        delete_pidfile(pidfile);
     }
 
     // stop all processes
@@ -279,7 +278,15 @@ pub fn read_pid(path: String) -> u32 {
 
 // delete pid file
 pub fn delete_pidfile(path: String) {
-    remove_file(path).expect("delete pid failed");
+    let file = path.clone();
+
+    match remove_file(path) {
+        Ok(_) => info!("Delete pid file {} success.", file),
+        Err(e) => match e.kind() {
+            ErrorKind::NotFound => info!("{} not found.", file),
+            _ => warn!("Delete pid file {} failed!", file),
+        },
+    }
 }
 
 // whether process exsit
