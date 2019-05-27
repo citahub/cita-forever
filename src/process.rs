@@ -1,8 +1,5 @@
-extern crate util;
-
-use channel;
-use channel::{Receiver, Sender};
-use config::{ForeverConfig, ProcessConfig};
+use crate::config::{ForeverConfig, ProcessConfig};
+use channel::{unbounded, Receiver, Sender};
 use std::collections::HashMap;
 use std::default::Default;
 use std::fs::remove_file;
@@ -100,7 +97,7 @@ impl Processes {
 
     // run all child processes
     pub fn start_all(self) {
-        let (tx, rx): (Sender<String>, Receiver<String>) = channel::unbounded();
+        let (tx, rx): (Sender<String>, Receiver<String>) = unbounded();
 
         for (_, child_process) in self.children {
             let tx = tx.clone();
