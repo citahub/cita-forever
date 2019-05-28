@@ -15,10 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-extern crate clap;
 extern crate crossbeam_channel as channel;
 #[macro_use]
-extern crate logger;
+extern crate cita_logger;
 #[macro_use]
 extern crate util;
 
@@ -28,11 +27,11 @@ extern crate serde_derive;
 pub mod config;
 pub mod process;
 
+use crate::config::ForeverConfig;
+use crate::process::Processes;
 use clap::{App, Arg, SubCommand};
-use config::ForeverConfig;
-use process::Processes;
 
-use logger::LogFavour;
+use crate::cita_logger::{init_config, LogFavour};
 use std::env;
 
 include!(concat!(env!("OUT_DIR"), "/build_info.rs"));
@@ -86,7 +85,7 @@ fn main() {
     } else {
         LogFavour::File("cita-forever")
     };
-    logger::init_config(&favour);
+    init_config(&favour);
     info!("CITA:forever:cita-forever");
     info!("Version: {}", get_build_info_str(true));
 
