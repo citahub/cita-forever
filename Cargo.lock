@@ -120,7 +120,7 @@ dependencies = [
 [[package]]
 name = "cita-types"
 version = "0.1.0"
-source = "git+https://github.com/cryptape/cita-common.git?branch=remove-gpl#3e7caf19c28e7d52cdb841ba5813cde0236d80bb"
+source = "git+https://github.com/cryptape/cita-common.git?branch=remove-gpl#ea3cea6e729e8566c7d6253fd196bee712ae53ac"
 dependencies = [
  "ethereum-types 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "plain_hasher 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -554,7 +554,7 @@ dependencies = [
 [[package]]
 name = "panic_hook"
 version = "0.0.1"
-source = "git+https://github.com/cryptape/cita-common.git?branch=remove-gpl#3e7caf19c28e7d52cdb841ba5813cde0236d80bb"
+source = "git+https://github.com/cryptape/cita-common.git?branch=remove-gpl#ea3cea6e729e8566c7d6253fd196bee712ae53ac"
 dependencies = [
  "backtrace 0.3.9 (registry+https://github.com/rust-lang/crates.io-index)",
  "cita-logger 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -671,7 +671,7 @@ dependencies = [
 [[package]]
 name = "rlp"
 version = "0.2.0"
-source = "git+https://github.com/cryptape/cita-common.git?branch=remove-gpl#3e7caf19c28e7d52cdb841ba5813cde0236d80bb"
+source = "git+https://github.com/cryptape/cita-common.git?branch=remove-gpl#ea3cea6e729e8566c7d6253fd196bee712ae53ac"
 dependencies = [
  "byteorder 1.2.4 (registry+https://github.com/rust-lang/crates.io-index)",
  "cita-types 0.1.0 (git+https://github.com/cryptape/cita-common.git?branch=remove-gpl)",
@@ -791,7 +791,7 @@ dependencies = [
 [[package]]
 name = "snappy"
 version = "0.1.0"
-source = "git+https://github.com/cryptape/cita-common.git?branch=remove-gpl#3e7caf19c28e7d52cdb841ba5813cde0236d80bb"
+source = "git+https://github.com/cryptape/cita-common.git?branch=remove-gpl#ea3cea6e729e8566c7d6253fd196bee712ae53ac"
 dependencies = [
  "libc 0.2.46 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
@@ -944,7 +944,7 @@ dependencies = [
 [[package]]
 name = "util"
 version = "0.6.0"
-source = "git+https://github.com/cryptape/cita-common.git?branch=remove-gpl#3e7caf19c28e7d52cdb841ba5813cde0236d80bb"
+source = "git+https://github.com/cryptape/cita-common.git?branch=remove-gpl#ea3cea6e729e8566c7d6253fd196bee712ae53ac"
 dependencies = [
  "ansi_term 0.9.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "cita-types 0.1.0 (git+https://github.com/cryptape/cita-common.git?branch=remove-gpl)",
