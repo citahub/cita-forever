@@ -10,7 +10,7 @@ serde_derive = "1.0"
 clap = "2"
 util = { git = "https://github.com/cryptape/cita-common.git", branch = "develop" }
 crossbeam-channel = "0.3.8"
-cita-logger = "0.1.0"
+cita-logger = "0.1.1"
 
 [build-dependencies]
 util = { git = "https://github.com/cryptape/cita-common.git", branch = "develop" }
