@@ -99,7 +99,6 @@ fn main() {
             Some(pid) => {
                 let name = daemon.processcfg.name.clone().unwrap();
                 warn!("{} already started,pid is {}", name, pid);
-                return;
             }
             None => daemon.start(),
         },
