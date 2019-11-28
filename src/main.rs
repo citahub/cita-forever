@@ -1,4 +1,4 @@
-// Copyright Cryptape Technologies LLC.
+// Copyright Rivtower Technologies LLC.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ fn main() {
     let matches = App::new("Forever")
         .version(get_build_info_str(true))
         .long_version(get_build_info_str(false))
-        .author("Cryptape")
+        .author("Rivtower")
         .about("Forever the processes")
         .arg(
             Arg::with_name("config")
@@ -55,25 +55,25 @@ fn main() {
             SubCommand::with_name("start")
                 .about("Start all proccesses in the background")
                 .version("0.1")
-                .author("Cryptape"),
+                .author("Rivtower"),
         )
         .subcommand(
             SubCommand::with_name("stop")
                 .about("Stop all proccesses")
                 .version("0.1")
-                .author("Cryptape"),
+                .author("Rivtower"),
         )
         .subcommand(
             SubCommand::with_name("logrotate")
                 .about("rotate logs")
                 .version("0.1")
-                .author("Cryptape"),
+                .author("Rivtower"),
         )
         .subcommand(
             SubCommand::with_name("")
                 .about("Start all proccesses in the foreground")
                 .version("0.1")
-                .author("Cryptape"),
+                .author("Rivtower"),
         )
         .get_matches();
 
