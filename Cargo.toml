@@ -6,11 +6,11 @@ license = "Apache-2.0"
 edition = "2018"
 
 [dependencies]
-serde = "1.0"
-serde_derive = "1.0"
-clap = "2"
+serde = "1.0.103"
+serde_derive = "1.0.103"
+clap = "2.33.0"
 util = { git = "https://github.com/citahub/cita-common.git", branch = "develop" }
-crossbeam-channel = "0.3.8"
+crossbeam-channel = "0.4.0"
 cita-logger = "0.1.1"
 
 [build-dependencies]
