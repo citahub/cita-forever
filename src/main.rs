@@ -94,7 +94,7 @@ fn main() {
     match matches.subcommand_name() {
         Some("start") => match daemon.find_process() {
             Some(pid) => {
-                let name = daemon.processcfg.name.clone().unwrap();
+                let name = daemon.processcfg.name.unwrap();
                 warn!("{} already started,pid is {}", name, pid);
             }
             None => daemon.start(),
